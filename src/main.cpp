@@ -25,8 +25,13 @@ int main(int argc, char** argv){
 		fprintf(stderr, "Error creating directory!\n");
 		exit(1);
 	}
+	mkdir(ASSETSPATH, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	if (-1 == dir_err && errno != EEXIST){
+		fprintf(stderr, "Error creating directory!\n");
+		exit(1);
+	}
 	
-	Context::init("Guns Game");
+	Context::init("Progetto Pi");
 	Context::setView(new MainMenu());
 	Context::mainLoop();
 	

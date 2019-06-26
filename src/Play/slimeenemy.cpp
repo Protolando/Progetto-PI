@@ -11,7 +11,7 @@ SlimeEnemy::SlimeEnemy(std::string str, glm::vec2 startpos) : Character::Charact
 	Character::hpbar = new HpBar(Character::maxHp, new glm::vec2(startpos), SPRITE_WIDTH, SPRITE_HEIGHT/10);
 	
 	SlimeEnemy::bullettex = Context::renderer->generate_texture(
-			std::string(std::string(TEXPATH) + std::string("/slimebullet.png")).c_str()
+			std::string(std::string(ASSETSPATH) + std::string("/slimebullet.png")).c_str()
 	);
 	Character::invulDuration = 0.2f;
 }

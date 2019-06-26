@@ -6,12 +6,12 @@
 
 PlayerCharacter::PlayerCharacter() :
 Character::Character(
-	"/home/protolando/tmp/character.png",
+	std::string(ASSETSPATH) + "/character.png",
 	glm::vec2(Context::window_width/2, Context::window_height/2)
 ){
 	PlayerCharacter::bullettex = 
 		Context::renderer->generate_texture(
-			std::string(std::string(TEXPATH) + std::string("/FriendBullet.png")).c_str()
+			std::string(std::string(ASSETSPATH) + std::string("/FriendBullet.png")).c_str()
 		);
 	Character::charspeed = 200;
 	delete Character::hitbox;

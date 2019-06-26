@@ -10,6 +10,7 @@
 #include "../mainmenu.hpp"
 #define MAINMENU "Main Menu"
 #define RESTART "Restart"
+#define NENEMIES 10
 
 PlayView::PlayView(std::string *mapname){
 	/*
@@ -31,8 +32,8 @@ PlayView::PlayView(std::string *mapname){
 	PlayView::view = glm::mat4(1.0f);
 	
 	//Spawn Enemies
-	for(int i = 0; i < 1; i++){
-		Character *enem = new SlimeEnemy("/home/protolando/tmp/slime.png", glm::vec2(0.0f, 0.0f));
+	for(int i = 0; i < NENEMIES; i++){
+		Character *enem = new SlimeEnemy(std::string(ASSETSPATH) + "/slime.png", glm::vec2(0.0f, 0.0f));
 		bool placed = false;
 		while(!placed){
 			enem->setPosition({
@@ -481,6 +482,9 @@ void PlayView::onResize(GGResizeEvent *evt){
 }
 
 bool PlayView::onMouseUp(GGClickEvent *evt){
+	if(!PlayView::gameOver && !PlayView::pause && !PlayView::wonned)
+		return true;
+
 	if(PlayView::mainMenu->onMouseUp(evt)){
 		Context::switchView(new MainMenu());
 	} else if(PlayView::restart->onMouseUp(evt)){
