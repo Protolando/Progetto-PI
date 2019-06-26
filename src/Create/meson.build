@@ -1,0 +1,15 @@
+createviewlib = static_library('createviewlib',
+			['createview.cpp',
+			 'createview.hpp',
+			 'createsidepanel.hpp',
+			 'createsidepanel.cpp',
+			 'grid.hpp',
+			 'grid.cpp',
+			 '../json.hpp',
+			 '../bumpmap_values.hpp',
+			 '../bumpmap_values.cpp',
+			 '../mainmenu.hpp',
+			 '../mainmenu.cpp'
+			],
+			link_with : [contextlib],
+			install : true)
