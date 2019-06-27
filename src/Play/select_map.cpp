@@ -5,7 +5,7 @@
 #include "playview.hpp"
 #include <dirent.h>
 #define BACK "back"
-#define MAP_NAME_PADDING 20
+#define MAP_NAME_PADDING 30
 #define SELECT_MAP "Select a map"
 
 SelectMap::SelectMap(){
@@ -53,7 +53,7 @@ SelectMap::SelectMap(){
 		+ 3*MAP_NAME_PADDING;
 
 	for(auto i = SelectMap::map_list.begin(); i != SelectMap::map_list.end(); i++){
-		(*i)->setPosition(new glm::vec2(xPos, yPos));
+		(*i)->setPosition(new glm::vec2(xPos, yPos+MAP_NAME_PADDING/2));
 		yPos += 2*MAP_NAME_PADDING;
 		GGView::addView((*i));
 	}
@@ -100,11 +100,11 @@ void SelectMap::draw(){
 		Context::renderer->fill_rect(
 			glm::vec2(
 				xPos - MAP_NAME_PADDING/2,
-				2*MAP_NAME_PADDING*(i - 1) + yPos - MAP_NAME_PADDING/2
+				2*MAP_NAME_PADDING*(i - 1) + yPos
 			),
 			glm::vec2(
 				xPos + SelectMap::mapNamesWidth + MAP_NAME_PADDING/2,
-				2*MAP_NAME_PADDING*i + yPos - MAP_NAME_PADDING/2
+				2*MAP_NAME_PADDING*i + yPos
 			),
 			color
 		);
@@ -112,21 +112,21 @@ void SelectMap::draw(){
 		Context::renderer->draw_line(
 			glm::vec2(
 				xPos - MAP_NAME_PADDING/2,
-				2*MAP_NAME_PADDING*i + yPos - MAP_NAME_PADDING/2
+				2*MAP_NAME_PADDING*i + yPos
 			),
 			glm::vec2(
 				xPos + SelectMap::mapNamesWidth + MAP_NAME_PADDING/2,
-				2*MAP_NAME_PADDING*i + yPos - MAP_NAME_PADDING/2
+				2*MAP_NAME_PADDING*i + yPos
 			),
 			glm::vec4(P_DARK_BLACK)
 		);
 	}
 	
 	Context::renderer->draw_rect(
-		glm::vec2(xPos - MAP_NAME_PADDING/2, yPos - MAP_NAME_PADDING/2),
+		glm::vec2(xPos - MAP_NAME_PADDING/2, yPos),
 		glm::vec2(
 			xPos + SelectMap::mapNamesWidth + MAP_NAME_PADDING/2,
-			yPos + 2*MAP_NAME_PADDING * SelectMap::map_list.size() - MAP_NAME_PADDING/2
+			yPos + 2*MAP_NAME_PADDING * SelectMap::map_list.size()
 		),
 		glm::vec4(P_DARK_BLACK)
 	);
@@ -140,19 +140,19 @@ bool SelectMap::onMouseUp(GGClickEvent *evt){
 	
 	int yPos = SelectMap::selectMapLable->getHeight()
 		+ SelectMap::selectMapLable->getPosition().y
-		+ 2*MAP_NAME_PADDING;
-	int xPos = (Context::window_width - SelectMap::mapNamesWidth)/2;
+		+ 3*MAP_NAME_PADDING;
+	double xPos = (Context::window_width - SelectMap::mapNamesWidth)/2;
 
 	if(SelectMap::backButton->onMouseUp(evt)){
 		Context::switchView(new MainMenu());
 	} else if(x > xPos - MAP_NAME_PADDING/2 &&
 		x < SelectMap::mapNamesWidth + xPos + MAP_NAME_PADDING/2 &&
-		y > yPos + MAP_NAME_PADDING/2 &&
-		y < 2*MAP_NAME_PADDING*((int)SelectMap::map_list.size()) + yPos + MAP_NAME_PADDING/2
+		y > yPos &&
+		y < 2*MAP_NAME_PADDING*((int)SelectMap::map_list.size()) + yPos
 		){
-		std::string mapname = *(SelectMap::map_list.at(
-			(int) ceil((y - yPos)/(3*MAP_NAME_PADDING))
-		)->getText());
+
+		int mapnamepos = (int) floor((y - yPos)/(2*MAP_NAME_PADDING));
+		std::string mapname = *(SelectMap::map_list.at(mapnamepos)->getText());
 		
 		Context::switchView(new PlayView(new std::string(mapname)));
 		
@@ -177,8 +177,8 @@ void SelectMap::onMouseMove(GGMouseMoveEvent *evt){
 	
 	if( x > xPos - MAP_NAME_PADDING/2 &&
 		x < SelectMap::mapNamesWidth + xPos + MAP_NAME_PADDING/2 &&
-		y > yPos - MAP_NAME_PADDING/2 &&
-		y < 2*MAP_NAME_PADDING*((int)SelectMap::map_list.size()) + yPos - MAP_NAME_PADDING/2
+		y > yPos &&
+		y < 2*MAP_NAME_PADDING*((int)SelectMap::map_list.size()) + yPos
 		)
 		Context::setCursorToClick();
 	else
